@@ -1,0 +1,35 @@
+turn all this to false:
+
+extensions.pocket.enabled
+browser.newtabpage.activity-stream.feeds.section.topstories
+browser.newtabpage.activity-stream.feeds.section.highlights
+----------------------------------------------------------------------
+gfx.color_management.enablev4         >false
+gfx.color_management.mode             >0
+
+----------------------------------------------------------------------
+      https://0.0.0.0/
+breakpad.reportURL
+experiments.manifest.uri
+security.ssl.errorReporting.url
+toolkit.telemetry.infoURL
+toolkit.telemetry.server
+----------------------------------------------------------------------
+>false  :
+browser.tabs.crashReporting.sendReport
+dom.ipc.plugins.flash.subprocess.crashreporter.enabled
+toolkit.crashreporter.enabled
+browser.crashReports.unsubmittedCheck.autoSubmit
+browser.crashReports.unsubmittedCheck.enabled
+dom.ipc.plugins.reportCrashURL
+datareporting.healthreport.service.enabled
+datareporting.healthreport.uploadEnabled
+datareporting.policy.dataSubmissionEnabled
+toolkit.telemetry.reportingpolicy.firstRun
+devtools.onboarding.telemetry.logged
+toolkit.telemetry.archive.enabled
+toolkit.telemetry.enabled
+toolkit.telemetry.newProfilePing.enabled
+toolkit.telemetry.shutdownPingSender.enabled
+toolkit.telemetry.unified
+browser.send_pings

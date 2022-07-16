@@ -1,0 +1,12 @@
+create a profile in the default folder (c:\users\...\mozilla...), without running the application
+firefox -CreateProfile "firefox_developer_x64_profile"
+
+create a profile in a specific folder, without running the application
+firefox -CreateProfile "firefox_developer_x64_profile D:\Software\Mozilla\firefox_developer_x64_profile"
+
+start firefox with specific profile
+firefox -profile "D:\Software\Mozilla\firefox_developer_x64_profile"
+
+
+start firefox with specific profile, allowing multiple profiles to be used in the same time.
+firefox -new-instance -profile "D:\Software\Mozilla\firefox_developer_x64_profile"

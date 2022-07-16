@@ -1,0 +1,31 @@
+//lockPref("font.language.group", "he");
+//lockPref("browser.search.countryCode", "IL");
+//lockPref("browser.search.region", "IL");
+the search engine is set hard-coded and not need that.
+
+//lockPref("device.camera.enabled", true);
+it is better to let the browser ask every time.
+
+//lockPref("e10s.rollout.cohort", "unsupportedChannel");
+//lockPref("extensions.e10s.rollout.hasAddon", false);
+//lockPref("extensions.e10sBlockedByAddons", true);
+//lockPref("extensions.e10sMultiBlockedByAddons", false);
+related to multi-process and should be handled by the browser, 
+the preferences name was changes to something like 'disableSHA1.rollout.policySetByAddOn'.
+
+
+//lockPref("font.blacklist.underline_offset", "");
+remove some rendering from fonts, 
+mostly eastern-ones. disabling it "removes" the special sets from the font.
+not useful.
+
+
+//lockPref("font.internaluseonly.changed", false);
+this is related to font-cache changed in the operation-system (linux),
+and should not be set on the preferences.
+
+//lockPref("font.minimum-size.he", 9);
+//lockPref("font.minimum-size.x-western", 9);
+//lockPref("font.size.fixed.he", 12);
+//lockPref("font.size.fixed.x-western", 12);
+not needed

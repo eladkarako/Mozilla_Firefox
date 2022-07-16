@@ -1,0 +1,7 @@
+pref("mousewheel.min_line_scroll_amount", 20);
+pref("general.smoothScroll.mouseWheel.durationMaxMS", 600);
+pref("general.smoothScroll.mouseWheel.durationMinMS", 400);
+pref("mousewheel.acceleration.start", 4);
+pref("mousewheel.acceleration.factor", 30);
+pref("mousewheel.default.delta_multiplier_y", 600);
+pref("mousewheel.system_scroll_override_on_root_content.vertical.factor", 600);

@@ -1,0 +1,6 @@
+https://addons.mozilla.org/firefox/language-tools/
+
+
+https://addons.mozilla.org/firefox/addon/us-english-dictionary/
+https://addons.mozilla.org/en-GB/firefox/addon/british-english-dictionary-2/
+https://addons.mozilla.org/en-GB/firefox/addon/hebrew-spell-checking-dictiona/

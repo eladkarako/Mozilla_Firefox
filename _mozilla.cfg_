@@ -1,0 +1,979 @@
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= KEEP THIS LINE.
+// https://hg.mozilla.org/mozilla-central/file/tip/mobile/android/app/mobile.js         - requires editing of '/assets/omni.ja (<-zip)/defaults/pref/mobile.js' https://developer.mozilla.org/en-US/docs/Mozilla/About_omni.ja_(formerly_omni.jar)
+// https://hg.mozilla.org/releases/mozilla-release/file/tip/modules/libpref/init/all.js - best to use 'channel-prefs.js'+'mozilla.cfg' method.
+//lockPref("browser.tabs.closeButtons, 1);                                    //with 'browser.tabs.tabClipWidth=0' will show 'x' button on all tabs
+//lockPref("browser.tabs.tabClipWidth, 0);                                    //with 'browser.tabs.closeButtons=1' will show 'x' button on all tabs
+//lockPref("apz.allow_zooming", true);                                        //problematic with some extensions. you need it true for Firefox for Android otherwise it won't allow zoon-gesture. BUT it will break newer versions (webextention) of ublock-origin, legacy versions still works OK.
+//lockPref("browser.migrated-sync-button", true);                             //this is a flag that is set after migration to newer version
+//lockPref("browser.newtabpage.activity-stream.migrationExpired", true);      //this is a flag that is set after migration to newer version
+//lockPref("browser.urlbar.matchBuckets", "general:5, suggestion:Infinity");  //show results from 'history' and 'bookmarks' first. dynamic search-results last.
+//lockPref("dom.meta-viewport.enabled", false);                               //do not set true. when 'true'===>BUG: v45.0 / ublock origin 1.6.10 will a little white-square instead of the addon control panel.
+//lockPref("dom.storage.enabled", false);                                     //this will disable HTML5 localStorage!
+//lockPref("dom.w3c_pointer_events.enabled", true);                           //try it
+//lockPref("extensions.autoDisableScopes", 0);
+//lockPref("extensions.enabledScopes", 15);
+//lockPref("extensions.pendingOperations", false);                            //this is a flag that is set after some extension has done a long-persisting action. should not be used since it can break extension-action-results (such as ones that should be completed after browser-restart).
+//lockPref("extensions.webextensions.base-content-security-policy", "default-src 'none'; script-src 'none'; object-src 'none';");
+//lockPref("extensions.webextensions.base-content-security-policy.v3", "default-src 'none'; script-src 'none'; object-src 'none';");
+//lockPref("gecko.handlerService.migrated", true);                            //this is a flag that is set after migration to newer version
+//lockPref("gfx.font_rendering.cleartype_params.rendering_mode", 2);
+//lockPref("gfx.font_rendering.fontconfig.fontlist.enabled", false);          //if firefox version is less then 48 it will crash...
+//lockPref("layout.css.touch_action.enabled", true);                          //try it
+//lockPref("media.autoplay.blocking_policy", 2); //autoplay - block autoplay unless element is clicked, and apply the policy to all elements including muted ones.
+//lockPref("media.autoplay.enabled", false);                    //disable auto play of audio/video
+//lockPref("media.autoplay.enabled.user-gestures-needed", false);
+//lockPref("media.block-autoplay-until-in-foreground", true);   //limit auto play of audio/video, avoiding start-playing in background tab (but can start and leave playing manually in background-tabs).
+//lockPref("media.block-play-until-visible", true);             //limit auto play of audio/video, avoiding start-playing in background tab (but can start and leave playing manually in background-tabs).
+//lockPref("media.hardware-video-decoding.failed", false);                    //this is a flag that is set after migration to newer version
+//lockPref("network.cookie.prefsMigrated", true);                             //this is a flag that is set after migration to newer version
+//lockPref("network.http.referer.XOriginPolicy", 0);         // cross-origin referer header : default, might be worth changing to 2 to stop sending them completely
+//lockPref("network.http.referer.XOriginTrimmingPolicy", 2); // cross-origin referer header : trim referer to only send scheme, host and port
+//lockPref("pdfjs.migrationVersion", 2);                                      //this is a flag that is set after migration to newer version
+//lockPref("plugins.click_to_play", true);
+//lockPref("pref.browser.language.disable_button.down", false);                   //not working as expected actually disables the UI when presented
+//lockPref("pref.browser.language.disable_button.remove", false);                 //not working as expected actually disables the UI when presented
+//lockPref("pref.general.disable_button.default_browser", false);                 //not working as expected actually disables the UI when presented
+//lockPref("pref.privacy.disable_button.change_blocklist", false);                //not working as expected actually disables the UI when presented
+//lockPref("pref.privacy.disable_button.tracking_protection_exceptions", false);  //not working as expected actually disables the UI when presented
+//lockPref("security.disable_button.openCertManager", false);             //not working as expected actually disables the UI when presented
+//lockPref("security.disable_button.openDeviceManager", false);           //not working as expected actually disables the UI when presented
+//lockPref("services.sync.migrated", true);                                   //this is a flag that is set after migration to newer version
+lockPref("accelerometer.enabled", false);
+lockPref("accessibility.blockautorefresh", true);
+lockPref("accessibility.delay_plugin_time", 10000);
+lockPref("accessibility.delay_plugins", false);
+lockPref("accessibility.force_disabled", 1);
+lockPref("accessibility.typeaheadfind", false);
+lockPref("accessibility.typeaheadfind.flashBar", 0);
+lockPref("alerts.showFavicons", true);
+lockPref("app.normandy.api_url", "https://0.0.0.0/");    // opt-out of normandy and studies
+lockPref("app.normandy.enabled", false);                 // opt-out of normandy and studies
+lockPref("app.normandy.first_run", false);
+lockPref("app.normandy.run_interval_seconds", 86400);
+lockPref("app.normandy.startup_delay_seconds", 300);
+lockPref("app.normandy.user_id", "");
+lockPref("app.shield.optoutstudies.enabled", false);
+lockPref("app.shield.optoutstudies.enabled", false);     // opt-out of normandy and studies
+lockPref("app.update.android.enabled", false);
+lockPref("app.update.android.url", "https://0.0.0.0/");
+lockPref("app.update.auto", false);
+lockPref("app.update.autodownload", "never");
+lockPref("app.update.background.scheduling.enabled", false);
+lockPref("app.update.backgroundErrors", 0);
+lockPref("app.update.badgeWaitTime", -1);
+lockPref("app.update.checkInstallTime", false);
+lockPref("app.update.doorhanger", false);
+lockPref("app.update.download.attempts", 0);
+lockPref("app.update.enabled", false);
+lockPref("app.update.ios.url", "https://0.0.0.0/");
+lockPref("app.update.mode", 0);
+lockPref("app.update.promptWaitTime", -1);
+lockPref("app.update.service.enabled", false);
+lockPref("app.update.silent", true);                    //app.update.silent:true + app.update.url:"https://0.0.0.0/"means no annoying messages.
+lockPref("app.update.staging.enabled", false);
+lockPref("app.update.url", "https://0.0.0.0/");
+lockPref("app.update.url.android", "https://0.0.0.0/");
+lockPref("app.update.url.ios", "https://0.0.0.0/");
+lockPref("app.update.url.manual", "https://0.0.0.0/");
+lockPref("apz.autoscroll.enabled", false);
+lockPref("apz.frame_delay.enabled", false);
+lockPref("apz.record_checkerboarding", false);
+lockPref("apz.relative-update.enabled", false);
+lockPref("apz.scale_repaint_delay_ms", 50);
+lockPref("apz.test.logging_enabled", false);
+lockPref("beacon.enabled", false);
+lockPref("bidi.browser.ui", true);
+lockPref("breakpad.reportURL", "https://0.0.0.0/");
+lockPref("browser.aboutConfig.showWarning", false);
+lockPref("browser.aboutHomeSnippets.updateUrl", "https://0.0.0.0/");
+lockPref("browser.allTabs.previews", true);
+lockPref("browser.backspace_action", 2);
+lockPref("browser.blink_allowed", false);
+lockPref("browser.bookmarks.addedImportButton", true);
+lockPref("browser.bookmarks.max_backups", 1);
+lockPref("browser.bookmarks.restore_default_bookmarks", false);
+lockPref("browser.bookmarks.showMobileBookmarks", true);
+lockPref("browser.cache.disk.filesystem_reported", 1);
+lockPref("browser.cache.disk.smart_size.first_run", false);
+lockPref("browser.cache.frecency_experiment", -1);
+lockPref("browser.cache.memory.enable", true);
+lockPref("browser.cache.offline.enable", true);
+lockPref("browser.cache.use_new_backend", 1);
+lockPref("browser.casting.enabled", false);
+lockPref("browser.chrome.errorReporter.enabled", false);
+lockPref("browser.chrome.errorReporter.submitUrl", "https://0.0.0.0/");
+lockPref("browser.chrome.toolbar_tips", false);
+lockPref("browser.compactmode.show", true);
+lockPref("browser.contentblocking.allowlist.annotations.enabled", false);
+lockPref("browser.contentblocking.allowlist.storage.enabled", false);
+lockPref("browser.contentblocking.category", "custom");
+lockPref("browser.contentblocking.control-center.ui.showAllowedLabels", false);
+lockPref("browser.contentblocking.control-center.ui.showBlockedLabels", false);
+lockPref("browser.contentblocking.cryptomining.preferences.ui.enabled", false);
+lockPref("browser.contentblocking.database.enabled", false);
+lockPref("browser.contentblocking.enabled", false);
+lockPref("browser.contentblocking.features.standard", "");
+lockPref("browser.contentblocking.features.strict", "");
+lockPref("browser.contentblocking.fingerprinting.preferences.ui.enabled", false);
+lockPref("browser.contentblocking.introCount", 20);                           //prevent notice of content-blocking by marking that the maximum-amount of notice-msg.s reached already.
+lockPref("browser.contentblocking.rejecttrackers.control-center.ui.enabled", false);
+lockPref("browser.contentblocking.rejecttrackers.reportBreakage.enabled", false);
+lockPref("browser.contentblocking.report.hide_vpn_banner", true);
+lockPref("browser.contentblocking.report.lockwise.enabled", false);  //remove warnings from 'about:*' pages
+lockPref("browser.contentblocking.report.monitor.enabled", false);
+lockPref("browser.contentblocking.report.show_mobile_app", false);
+lockPref("browser.contentblocking.report.vpn.enabled", false);
+lockPref("browser.contentblocking.reportBreakage.enabled", false);
+lockPref("browser.contentblocking.reportBreakage.url", "https://0.0.0.0/");
+lockPref("browser.contentblocking.trackingprotection.control-center.ui.enabled", false);
+lockPref("browser.crashReports.unsubmittedCheck.autoSubmit", false);
+lockPref("browser.crashReports.unsubmittedCheck.enabled", false);
+lockPref("browser.ctrlTab.previews", true);
+lockPref("browser.discovery.containers.enabled", false);     // disable personalized extension recommendations
+lockPref("browser.discovery.enabled", false);                // disable personalized extension recommendations
+lockPref("browser.discovery.sites", "");                     // disable personalized extension recommendations
+lockPref("browser.display.blankWindow", false);
+lockPref("browser.display.history.maxresults", 50);
+lockPref("browser.display.use_system_colors", false);
+lockPref("browser.dom.window.dump.enabled", false);
+lockPref("browser.download.importedFromSqlite", true);
+lockPref("browser.download.manager.addToRecentDocs", false);
+lockPref("browser.download.manager.closeWhenDone", true);
+lockPref("browser.download.panel.shown", true);
+lockPref("browser.eme.ui.enabled", true);
+lockPref("browser.enable_automatic_image_resizing", false);
+lockPref("browser.enable_click_image_resizing", false);
+lockPref("browser.fixup.alternate.enabled", false);
+lockPref("browser.fixup.alternate.enabled", false);               //disable prefetch / speculative connections and domain guessing
+lockPref("browser.fixup.hide_user_pass", false);
+lockPref("browser.formfill.enable", true);
+lockPref("browser.fullscreen.animate", false);
+lockPref("browser.fullscreen.autohide", false);
+lockPref("browser.history.grouping", "day");
+lockPref("browser.history.showSessions", true);
+lockPref("browser.laterrun.bookkeeping.sessionCount", 1);
+lockPref("browser.laterrun.enabled", true);
+lockPref("browser.library.activity-stream.enabled", false);
+lockPref("browser.messaging-system.whatsNewPanel.enabled", false);
+lockPref("browser.meta_refresh_when_inactive.disabled", true);
+lockPref("browser.mirroring.enabled", false);
+lockPref("browser.newtab.preload", false);
+lockPref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr", false);
+lockPref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons", false);
+lockPref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false);
+lockPref("browser.newtabpage.activity-stream.default.sites", "");
+lockPref("browser.newtabpage.activity-stream.disableSnippets", true);
+lockPref("browser.newtabpage.activity-stream.discoverystream.config", "{\"enabled\":false,\"show_spocs\":false,\"layout_endpoint\":\"https://0.0.0.0/\"}");
+lockPref("browser.newtabpage.activity-stream.discoverystream.enabled", false);
+lockPref("browser.newtabpage.activity-stream.feeds.discoverystreamfeed", false);
+lockPref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
+lockPref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+lockPref("browser.newtabpage.activity-stream.feeds.section.topstories.options", "{\"enabled\":false,\"hidden\":true,\"read_more_endpoint\":\"https://0.0.0.0/\",\"stories_endpoint\":\"https://0.0.0.0/\",\"stories_referrer\":\"https://0.0.0.0\",\"topics_endpoint\":\"https://0.0.0.0/\",\"model_keys\":[],\"show_spocs\":false,\"personalized\":false,\"version\":2}");
+lockPref("browser.newtabpage.activity-stream.feeds.snippets", false);
+lockPref("browser.newtabpage.activity-stream.feeds.telemetry", false);
+lockPref("browser.newtabpage.activity-stream.feeds.topsites", false);
+lockPref("browser.newtabpage.activity-stream.filterAdult", false);
+lockPref("browser.newtabpage.activity-stream.impressionId", "");
+lockPref("browser.newtabpage.activity-stream.improvesearch.handoffToAwesomebar", false); //about:home Search Bar
+lockPref("browser.newtabpage.activity-stream.pocketCta", "");
+lockPref("browser.newtabpage.activity-stream.prerender", false);
+lockPref("browser.newtabpage.activity-stream.section.highlights.includeBookmarks", false);
+lockPref("browser.newtabpage.activity-stream.section.highlights.includeDownloads", false);
+lockPref("browser.newtabpage.activity-stream.section.highlights.includePocket", false);
+lockPref("browser.newtabpage.activity-stream.section.highlights.includeVisited", false);
+lockPref("browser.newtabpage.activity-stream.showSearch", false);
+lockPref("browser.newtabpage.activity-stream.showSponsored", false);
+lockPref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+lockPref("browser.newtabpage.activity-stream.telemetry", false);
+lockPref("browser.newtabpage.activity-stream.telemetry.ping.endpoint", "https://0.0.0.0/");
+lockPref("browser.newtabpage.activity-stream.telemetry.ut.events", false);
+lockPref("browser.newtabpage.directory.ping", "data:text/plain, ");
+lockPref("browser.newtabpage.directory.source", "data:text/plain, ");
+lockPref("browser.newtabpage.enabled", false);
+lockPref("browser.newtabpage.enhanced", false);
+lockPref("browser.newtabpage.introShown", false);
+lockPref("browser.newtabpage.storageVersion", 1);
+lockPref("browser.onboarding.notification.prompt-count", 1);
+lockPref("browser.onboarding.seen-tourset-version", 2);
+lockPref("browser.onboarding.tour-type", "update");
+lockPref("browser.onboarding.tour.onboarding-tour-sync.completed", true);
+lockPref("browser.pagethumbnails.capturing_disabled", true);
+lockPref("browser.ping-centre.telemetry", false);
+lockPref("browser.places.importBookmarksHTML", false);
+lockPref("browser.places.smartBookmarksVersion", 2);
+lockPref("browser.places.speculativeConnect.enabled", false);     //disable prefetch / speculative connections and domain guessing
+lockPref("browser.polaris.enabled", false);
+lockPref("browser.preferences.advanced.selectedTabIndex", 0);
+lockPref("browser.preferences.defaultPerformanceSettings.enabled", false);
+lockPref("browser.preferences.moreFromMozilla", false);
+lockPref("browser.preferences.useOldOrganization", true);
+lockPref("browser.promo.focus.enabled", false);
+lockPref("browser.proton.enabled", false);     //true is default
+lockPref("browser.proton.places-tooltip.enabled", false);
+lockPref("browser.proton.toolbar.version", 0); //3 is default
+lockPref("browser.reader.detectedFirstArticle", false);
+lockPref("browser.readinglist.enabled", false);
+lockPref("browser.rights.3.shown", true);
+lockPref("browser.safebrowsing.allowOverride", true);
+lockPref("browser.safebrowsing.blockedURIs.enabled", false);
+lockPref("browser.safebrowsing.debug", false);              
+lockPref("browser.safebrowsing.downloads.enabled", false);
+lockPref("browser.safebrowsing.downloads.remote.block_dangerous", false);
+lockPref("browser.safebrowsing.downloads.remote.block_dangerous_host", false);
+lockPref("browser.safebrowsing.downloads.remote.block_potentially_unwanted", false);
+lockPref("browser.safebrowsing.downloads.remote.block_uncommon", false);
+lockPref("browser.safebrowsing.downloads.remote.enabled", false);
+lockPref("browser.safebrowsing.downloads.remote.url", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.enabled", false);
+lockPref("browser.safebrowsing.gethashURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.malware.enabled", false);
+lockPref("browser.safebrowsing.malware.reportURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.passwords.enabled", false);
+lockPref("browser.safebrowsing.passwords.remote.enabled", false);
+lockPref("browser.safebrowsing.passwords.remote.url", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.passwords.url", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.phishing.enabled", false);
+lockPref("browser.safebrowsing.provider.google4.gethashURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google4.lastupdatetime", "");
+lockPref("browser.safebrowsing.provider.google4.nextupdatetime", "");
+lockPref("browser.safebrowsing.provider.google4.reportURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google4.updateURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google.appRepURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google.gethashURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google.lastupdatetime", "");
+lockPref("browser.safebrowsing.provider.google.nextupdatetime", "");
+lockPref("browser.safebrowsing.provider.google.reportURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.google.updateURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.mozilla.gethashURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.provider.mozilla.lastupdatetime", "");
+lockPref("browser.safebrowsing.provider.mozilla.nextupdatetime", "");
+lockPref("browser.safebrowsing.provider.mozilla.updateURL", "");
+lockPref("browser.safebrowsing.reportErrorURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportGenericURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportMalwareErrorURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportMalwareMistakeURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportMalwareURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportPhishMistakeURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportPhishURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.reportURL", "https://0.0.0.0/");
+lockPref("browser.safebrowsing.updateURL", "https://0.0.0.0/");
+lockPref("browser.search.defaulturl", "https://www.google.co.il/search?num=50&gbv=1&q=%s%20-site%3Aw3schools.com");
+lockPref("browser.search.geoip.timeout", 1);
+lockPref("browser.search.geoip.url", "");
+lockPref("browser.search.geoSpecificDefaults", false);
+lockPref("browser.search.geoSpecificDefaults.url", "");
+lockPref("browser.search.hiddenOneOffs", "Amazon.co.uk,Bing,Chambers (UK),DuckDuckGo,eBay,Google,Twitter,Wikipedia (en)");
+lockPref("browser.search.reset.status", "silent");
+lockPref("browser.search.suggest.enabled", false);
+lockPref("browser.search.suggest.prompted", false);
+lockPref("browser.search.update", false);
+lockPref("browser.search.useDBForOrder", true);
+lockPref("browser.selfsupport.enabled", false);
+lockPref("browser.selfsupport.url", "https://0.0.0.0/");
+lockPref("browser.send_pings", false);
+lockPref("browser.send_pings.max_per_link", 0);
+lockPref("browser.send_pings.require_same_host", true);
+lockPref("browser.sessionstore.debug_logging", false);
+lockPref("browser.sessionstore.max_resumed_crashes", 0);
+lockPref("browser.sessionstore.max_tabs_undo", 3);
+lockPref("browser.sessionstore.max_windows_undo", 2);
+lockPref("browser.sessionstore.privacy_level", 1);
+lockPref("browser.sessionstore.resume_from_crash", false);
+lockPref("browser.shell.checkDefaultBrowser", false);
+lockPref("browser.shell.didSkipDefaultBrowserCheckOnFirstRun", true);
+lockPref("browser.showQuitWarning", false);
+lockPref("browser.slowStartup.averageTime", 0);
+lockPref("browser.slowStartup.notificationDisabled", true);
+lockPref("browser.slowStartup.samples", 0);
+lockPref("browser.snippets.enabled", false);
+lockPref("browser.snippets.firstrunHomepage.enabled", false);
+lockPref("browser.snippets.syncPromo.enabled", false);
+lockPref("browser.snippets.updateUrl", "https://0.0.0.0/");
+lockPref("browser.startup.homepage", "https://www.google.co.il");
+lockPref("browser.startup.homepage_override.mstone", "ignore"); //first run
+lockPref("browser.tabs.animate", false);
+lockPref("browser.tabs.closeWindowWithLastTab", false);
+lockPref("browser.tabs.crashReporting.sendReport", false);
+lockPref("browser.tabs.drawInTitlebar", false); // false means write menu normally.
+lockPref("browser.tabs.inTitlebar", 0);         // 
+lockPref("browser.tabs.remote.autostart", true);
+lockPref("browser.tabs.remote.autostart.2", true);
+lockPref("browser.tabs.remote.force-disable", false);
+lockPref("browser.tabs.remote.force-enable", true);
+lockPref("browser.tabs.remote.separateFileUriProcess", true);
+lockPref("browser.tabs.tabMinWidth", 200);
+lockPref("browser.tabs.warnOnClose", false);
+lockPref("browser.tabs.warnOnCloseOtherTabs", false);
+lockPref("browser.tabs.warnOnOpen", false);
+lockPref("browser.taskbar.previews.enable", true);
+lockPref("browser.toolbarbuttons.introduced.pocket-button", false);
+lockPref("browser.topsites.useRemoteSetting", false); // hide sponsored shortcuts button
+lockPref("browser.trackingprotection.gethashURL", "https://0.0.0.0/");
+lockPref("browser.trackingprotection.getupdateURL", "https://0.0.0.0/");
+lockPref("browser.trackingprotection.updateURL", "https://0.0.0.0/");
+lockPref("browser.turbo.enabled", true);
+lockPref("browser.ui.linkify.phone", false);
+lockPref("browser.ui.zoom.force-user-scalable", true);
+lockPref("browser.uidensity", 1);
+lockPref("browser.uitour.enabled", false);
+lockPref("browser.uitour.url", "");
+lockPref("browser.urlbar.autocomplete.enabled", true);
+lockPref("browser.urlbar.autoFill", true);
+lockPref("browser.urlbar.clickSelectsAll", false);
+lockPref("browser.urlbar.daysBeforeHidingSuggestionsPrompt", 3);
+lockPref("browser.urlbar.dnsResolveSingleWordsAfterSearch", 0);   //disable prefetch / speculative connections and domain guessing
+lockPref("browser.urlbar.doubleClickSelectsAll", false);
+lockPref("browser.urlbar.eventTelemetry.enabled", false);
+lockPref("browser.urlbar.filter.javascript", true);
+lockPref("browser.urlbar.matchBuckets", "suggestion:8, general:10");          //show results from 'history' and 'bookmarks' last.
+lockPref("browser.urlbar.maxHistoricalSearchSuggestions", 0);                 //hide results from 'history' (bookmarks still shown).
+lockPref("browser.urlbar.maxRichResults", 20);
+lockPref("browser.urlbar.placeholderName", "Google");
+lockPref("browser.urlbar.speculativeConnect.enabled", false);     //disable prefetch / speculative connections and domain guessing
+lockPref("browser.urlbar.suggest.calculator", true); //calculator at urlbar
+lockPref("browser.urlbar.timesBeforeHidingSuggestionsHint", 0);
+lockPref("browser.urlbar.trimURLs", false);
+lockPref("browser.urlbar.unitConversion.enabled", true); //unit convertor at urlbar
+lockPref("browser.urlbar.update1.interventions", false);
+lockPref("browser.urlbar.update1.searchTips", false);
+lockPref("browser.urlbar.usepreloadedtopurls.enabled", true);
+lockPref("browser.vpn_promo.enabled", false);
+lockPref("browser.warnOnQuit", false);
+lockPref("browser.zoom.full", true);
+lockPref("browser.zoom.siteSpecific", true);
+lockPref("browser.zoom.updateBackgroundTabs", false);
+lockPref("camera.control.face_detection.enabled", false);
+lockPref("canvas.capturestream.enabled", false);
+lockPref("captivedetect.canonicalURL", "https://0.0.0.0/");
+lockPref("clipboard.autocopy", false);
+lockPref("clipboard.plainTextOnly", true);
+lockPref("config.trim_on_minimize", true);
+lockPref("config.use_system_prefs", true);
+lockPref("config.use_system_prefs.accessibility", true);
+lockPref("consoleservice.logcat", false);
+lockPref("crashreporter.enabled", false);
+lockPref("crashreporter.include_context_heap", false);
+lockPref("datareporting.healthreport.documentServerURI", "https://0.0.0.0/");
+lockPref("datareporting.healthreport.infoURL", "https://0.0.0.0/");
+lockPref("datareporting.healthreport.service.enabled", false);
+lockPref("datareporting.healthreport.uploadEnabled", false);
+lockPref("datareporting.policy.dataSubmissionEnabled", false);
+lockPref("datareporting.policy.dataSubmissionEnabled.v2", false);
+lockPref("datareporting.sessions.current.activeTicks", 1);
+lockPref("datareporting.sessions.current.clean", true);
+lockPref("datareporting.sessions.current.main", 0);
+lockPref("datareporting.sessions.currentIndex", 0);
+lockPref("default-browser-agent.enabled", false); // disable windows specific telemetry
+lockPref("device.sensors.enabled", false);
+lockPref("devtools.cache.disabled", true);
+lockPref("devtools.chrome.enabled", true);                         //https://developer.mozilla.org/en-US/docs/Tools/about:debugging#Enabling_add-on_debugging
+lockPref("devtools.command-button-screenshot.enabled", true);
+lockPref("devtools.debugger.remote-enabled", true);                //https://developer.mozilla.org/en-US/docs/Tools/about:debugging#Enabling_add-on_debugging
+lockPref("devtools.dom.enabled", true);
+lockPref("devtools.onboarding.telemetry.logged", false);
+lockPref("devtools.remote.usb.enabled", false);
+lockPref("devtools.remote.wifi.enabled", false);
+lockPref("devtools.theme", "light");
+lockPref("devtools.toolbox.host", "window");
+lockPref("devtools.toolbox.tabsOrder", "inspector,jsdebugger,styleeditor,performance,memory,netmonitor,storage,dom,accessibility,webconsole");
+lockPref("devtools.webconsole.filter.csserror", false);
+lockPref("devtools.webconsole.filter.net", true);
+lockPref("devtools.webconsole.filter.networkinfo", true);
+lockPref("devtools.webconsole.filter.netxhr", true);
+lockPref("devtools.webconsole.filter.servererror", true);
+lockPref("devtools.webconsole.filter.serverinfo", true);
+lockPref("devtools.webconsole.filter.serverlog", true);
+lockPref("devtools.webconsole.filter.serverwarn", true);
+lockPref("devtools.webconsole.filter.sharedworkers", true);
+lockPref("devtools.webconsole.filter.windowlessworkers", true);
+lockPref("devtools.webconsole.ui.filterbar", true);
+lockPref("devtools.webide.autoinstallADBHelper", false);
+lockPref("devtools.webide.autoinstallFxdtAdapters", false);
+lockPref("devtools.webide.enabled", false);
+lockPref("distribution.iniFile.exists.value", false);
+lockPref("dom.allow_cut_copy", false);
+lockPref("dom.battery.enabled", false);
+lockPref("dom.disable_window_open_feature.close", true);
+lockPref("dom.disable_window_open_feature.directories", true);
+lockPref("dom.disable_window_open_feature.menubar", true);
+lockPref("dom.disable_window_open_feature.minimizable", true);
+lockPref("dom.disable_window_open_feature.personalbar", true);
+lockPref("dom.disable_window_open_feature.scrollbars", true);
+lockPref("dom.disable_window_open_feature.titlebar", true);
+lockPref("dom.disable_window_open_feature.toolbar", true);
+lockPref("dom.enable_performance", false);
+lockPref("dom.enable_performance_navigation_timing", false);
+lockPref("dom.enable_performance_observer", false);
+lockPref("dom.enable_resource_timing", false);
+lockPref("dom.enable_user_timing", false);
+lockPref("dom.event.clipboardevents.enabled", false);
+lockPref("dom.event.coalesce_mouse_move", true);
+lockPref("dom.event.highrestimestamp.enabled", false);
+lockPref("dom.event.touch.coalescing.enabled", true);
+lockPref("dom.experimental_forms", true);
+lockPref("dom.flyweb.enabled", false);
+lockPref("dom.forms.autocomplete.formautofill", true);
+lockPref("dom.forms.selectSearch", true);
+lockPref("dom.gamepad.enabled", false);
+lockPref("dom.global_stop_script", true);
+lockPref("dom.idle-observers-api.enabled", false);
+lockPref("dom.imagecapture.enabled", false);
+lockPref("dom.indexedDB.enabled", true);
+lockPref("dom.indexedDB.experimental", true);
+lockPref("dom.indexedDB.logging.enabled", true);
+lockPref("dom.indexedDB.storageOption.enabled", true);
+lockPref("dom.IntersectionObserver.enabled", false);
+lockPref("dom.ipc.plugins.asyncdrawing.enabled", true);
+lockPref("dom.ipc.plugins.enabled", true);
+lockPref("dom.ipc.plugins.flash.subprocess.crashreporter.enabled", false);
+lockPref("dom.ipc.plugins.forcedirect.enabled", true);
+lockPref("dom.ipc.plugins.reportCrashURL", false);
+lockPref("dom.ipc.processCount", 6);
+lockPref("dom.max_chrome_script_run_time", 120);
+lockPref("dom.max_script_run_time", 60);
+lockPref("dom.media.autoplay.autoplay-policy-api", true); //autoplay status on DOM, to help page's code be aware.
+lockPref("dom.mozPay.enabled", false);
+lockPref("dom.netinfo.enabled", false);
+lockPref("dom.popup_maximum", 1);
+lockPref("dom.push.userAgentID", "");
+lockPref("dom.security.unexpected_system_load_telemetry_enabled", false);
+lockPref("dom.telephony.enabled", false);
+lockPref("dom.vibrator.enabled", false);
+lockPref("dom.vr.enabled", false);
+lockPref("dom.vr.oculus050.enabled", false);
+lockPref("dom.vr.oculus.enabled", false);
+lockPref("dom.vr.openvr.enabled", false);
+lockPref("dom.vr.osvr.enabled", false);
+lockPref("dom.vr.service.enabled", false);
+lockPref("dom.vr.test.enabled", false);
+lockPref("dom.w3c_touch_events.enabled", 1);    // 0 - disabled, 1 - enabled, 2 - autodetect(Windows and GTK3 only)
+lockPref("dom.webaudio.enabled", false);
+lockPref("dom.webcomponents.customelements.enabled", true);
+lockPref("dom.webcomponents.shadowdom.enabled", true);
+lockPref("dom.webnotifications.enabled", false);
+lockPref("dump.emit", false);
+lockPref("editor.background_color", "#F0F0F0");
+lockPref("editor.singleLine.pasteNewlines", 0);
+lockPref("experiments.activeExperiment", false);
+lockPref("experiments.enabled", false);
+lockPref("experiments.manifest.uri", "https://0.0.0.0/");
+lockPref("experiments.supported", false);
+lockPref("extensions.alwaysUnpack", true);
+lockPref("extensions.autoupdate.enabled", false);
+lockPref("extensions.blocklist.enabled", false);
+lockPref("extensions.blocklist.url", "https://blocklist.addons.mozilla.org/blocklist/3/%APP_ID%/%APP_VERSION%/");
+lockPref("extensions.checkCompatibility", false);
+lockPref("extensions.checkCompatibility.45.0", false);
+lockPref("extensions.checkUpdateSecurity", false);
+lockPref("extensions.disabledObsolete", false);
+lockPref("extensions.followonsearch.cohortSample", "0.000288");
+lockPref("extensions.formautofill.creditCards.available", false);
+lockPref("extensions.formautofill.creditCards.enabled", false);
+lockPref("extensions.formautofill.creditCards.used", 0);
+lockPref("extensions.getAddons.cache.enabled", false);
+lockPref("extensions.hideInstallButton", false);
+lockPref("extensions.hideUpdateButton", false);
+lockPref("extensions.hotfix.cert.checkAttributes", false);
+lockPref("extensions.langpacks.signatures.required", false);
+lockPref("extensions.legacy.enabled", true);
+lockPref("extensions.pocket.api", "0.0.0.0");
+lockPref("extensions.pocket.enabled", false);
+lockPref("extensions.pocket.oAuthConsumerKey", "");
+lockPref("extensions.pocket.site", "0.0.0.0");
+lockPref("extensions.screenshots.disabled", true);
+lockPref("extensions.screenshots.system-disabled", true);
+lockPref("extensions.sidebar-button.shown", true);
+lockPref("extensions.spellcheck.inline.max-misspellings", 100);
+lockPref("extensions.strictCompatibility", false);
+lockPref("extensions.systemAddon.update.enabled", false);
+lockPref("extensions.systemAddon.update.url", "https://0.0.0.0/");
+lockPref("extensions.ui.dictionary.hidden", false);
+lockPref("extensions.ui.experiment.hidden", false);
+lockPref("extensions.ui.lastCategory", "addons://list/extension");
+lockPref("extensions.ui.locale.hidden", false);
+lockPref("extensions.update.autoUpdate", false);
+lockPref("extensions.update.autoUpdateDefault", false);
+lockPref("extensions.update.autoUpdateEnabled", false);
+lockPref("extensions.update.background.url", "https://0.0.0.0/");
+lockPref("extensions.update.enabled", false);
+lockPref("extensions.update.url", "https://0.0.0.0/");
+lockPref("extensions.webcompat-reporter.enabled", false);
+lockPref("extensions.webcompat-reporter.newIssueEndpoint", "https://0.0.0.0/");
+lockPref("extensions.webextensions.keepStorageOnUninstall", false);
+lockPref("extensions.webextensions.keepUuidOnUninstall", false);
+lockPref("extensions.webservice.discoverURL", "https://0.0.0.0/");
+lockPref("fission.autostart", true); //project fission is site memory isolation everywhere (iframes).
+lockPref("full-screen-api.enabled", true);
+lockPref("full-screen-api.warning.delay", 0);
+lockPref("full-screen-api.warning.timeout", 0);
+lockPref("general.autoScroll", false);
+lockPref("general.smoothScroll", false);
+lockPref("general.smoothScroll.other", false);
+lockPref("general.smoothScroll.pages", false);
+lockPref("general.useragent.compatMode.firefox", false);
+lockPref("general.warnOnAboutConfig", false);
+lockPref("geo.enabled", false);
+lockPref("geo.wifi.logging.enabled", false);
+lockPref("geo.wifi.uri", "https://0.0.0.0/");
+lockPref("geo.wifi.xhr.timeout", 1);
+lockPref("gfx.android.rgb16.force", false);
+lockPref("gfx.color_management.enabled", false);
+lockPref("gfx.color_management.enablev4", false);
+lockPref("gfx.color_management.mode", 0);
+lockPref("gfx.crash-guard.d3d11layers.feature-d2d", false);
+lockPref("gfx.crash-guard.d3d11layers.feature-d3d11", false);
+lockPref("gfx.crash-guard.status.d3d9video", 2);
+lockPref("gfx.crash-guard.status.d3d11layers", 2);
+lockPref("gfx.direct2d.disabled", true);
+lockPref("gfx.downloadable_fonts.woff2.enabled", false);
+lockPref("gfx.font_rendering.directwrite.force-enabled", true);
+lockPref("gfx.font_rendering.graphite.enabled", false);
+lockPref("gfx.font_rendering.opentype_svg.enabled", false);
+lockPref("gfx.layerscope.enabled", false);
+lockPref("gfx.offscreencanvas.enabled", true);
+lockPref("gfx.SurfaceTexture.detach.enabled", true);
+lockPref("gfx.use_text_smoothing_setting", false);
+lockPref("gfx.webrender.blob-images", true);
+lockPref("gfx.webrender.svg-images", true);                                   //allow SVG (but not as font).
+lockPref("home.sync.updateMode", 1);
+lockPref("html5.offmainthread", true);
+lockPref("identity.enabled", false);
+lockPref("identity.fxaccounts.enabled", false);  //disable sync, also disable its controls and menu
+lockPref("identity.mobilepromo.android", "");
+lockPref("identity.mobilepromo.ios", "");
+lockPref("image.decode-immediately.enabled", true);
+lockPref("image.downscale-during-decode.enabled", false);
+lockPref("image.high_quality_downscaling.enabled", false);
+lockPref("image.multithreaded_decoding.enabled", true);
+lockPref("image.multithreaded_decoding.limit", 2);
+lockPref("image.single-color-optimization.enabled", false);
+lockPref("image.svg.blob-image", true);                                   //allow SVG (but not as font).
+lockPref("images.dither", "false");
+lockPref("intl.accept_languages", "en-gb, en, he");
+lockPref("intl.charset.fallback.override", "windows-1255");
+lockPref("intl.locale.matchOS", false);
+lockPref("javascript.options.asmjs", false);
+lockPref("javascript.options.asyncstack", false);
+lockPref("javascript.options.baselinejit", true);
+lockPref("javascript.options.gc_on_memory_pressure", false);
+lockPref("javascript.options.ion", false);
+lockPref("javascript.options.ion.offthread_compilation", false);
+lockPref("javascript.options.parallel_parsing", true);
+lockPref("javascript.options.strict", true);
+lockPref("javascript.options.wasm", false);
+lockPref("javascript.options.wasm_baselinejit", false);
+lockPref("javascript.options.wasm_ionjit", false);
+lockPref("keyword.URL", "https://www.google.co.il/search?num=50&gbv=1&q=%s%20-site%3Aw3schools.com");
+lockPref("layers.acceleration.disabled", false);
+lockPref("layers.acceleration.force-enabled", true);
+lockPref("layers.async-pan-zoom.enabled", false);                             //do not set true. when 'true'===>BUG: v45.0 will show white-page with no content!
+lockPref("layers.async-video.enabled", true);
+lockPref("layers.dump", false);
+lockPref("layers.enable-tiles", true);
+lockPref("layers.low-precision-buffer", true);
+lockPref("layers.low-precision-opacity", "1.0");
+lockPref("layers.low-precision-resolution", "0.25");
+lockPref("layers.max-active", 10);
+lockPref("layers.mlgpu.enabled", true);                                       //BUG: leave 'true'. let Firefox try sanity test. if 'prefs.js' will have 'layers.mlgpu.sanity-test-failed'-true, it means it can't use GPU.    Don't include 'layers.mlgpu.sanity-test-failed' !
+lockPref("layers.offmainthreadcomposition.enabled", true);
+lockPref("layers.prefer-d3d9", true);
+lockPref("layers.progressive-paint", true);
+lockPref("layers.tile-height", 96);
+lockPref("layers.tile-width", 96);
+lockPref("layers.tiles.adjust", true);
+lockPref("layers.tiles.edge-padding", true);
+lockPref("layout.accessiblecaret.hapticfeedback", true);
+lockPref("layout.css.backdrop-filter.enabled", true);  //css blur
+lockPref("layout.css.color-mix.enabled", true);
+lockPref("layout.css.devPixelsPerPx", "1.6");
+lockPref("layout.css.osx-font-smoothing.enabled", false);
+lockPref("layout.css.overscroll-behavior.enabled", false);
+lockPref("layout.css.prefixes.webkit", true);
+lockPref("layout.css.report_errors", false);
+lockPref("layout.css.scroll-behavior.enabled", false);
+lockPref("layout.css.visited_links_enabled", false);
+lockPref("layout.reflow.synthMouseMove", false);
+lockPref("layout.spellcheckDefault", 2);            //0 none, 1 multi-line only (textarea), 2 multi and single line (input). must have spellcheck="true"attribute as well. - next you should download spellcheck dic.s from:  https://addons.mozilla.org/en-GB/firefox/language-tools/ 
+lockPref("lightweightThemes.selectedThemeID", "");
+lockPref("lightweightThemes.update.enabled", false);
+lockPref("mathml.disabled", true);
+lockPref("media.android-media-codec.enabled", true);
+lockPref("media.android-media-codec.preferred", true);
+lockPref("media.autoplay.allow-muted", false);            //in the past autoplay with muted audio was fine. false mean never autoplay, even w/o audio.
+lockPref("media.autoplay.block-event.enabled", true);     //reject .play() promise (sends a DOMException), helps the page be aware of autoplay not available.
+lockPref("media.autoplay.block-webaudio", true);          //web-audio API is different from AUDIO/VIDEO elements. make sure to block it as well.
+lockPref("media.autoplay.default", 5);                    //autoplay default: block audio and video.
+lockPref("media.benchmark.vp9.fps", 108);
+lockPref("media.benchmark.vp9.versioncheck", 2);
+lockPref("media.cache_size", 4096);
+lockPref("media.eme.apiVisible", false);
+lockPref("media.eme.enabled", false); // master switch for drm content
+lockPref("media.flac.enabled", true);
+lockPref("media.getusermedia.aec_enabled", false);
+lockPref("media.getusermedia.agc_enabled", false);
+lockPref("media.getusermedia.audiocapture.enabled", false);
+lockPref("media.getusermedia.browser.enabled", false);
+lockPref("media.getusermedia.noise_enabled", false);
+lockPref("media.getusermedia.screensharing.allow_on_old_platforms", false);
+lockPref("media.getusermedia.screensharing.allowed_domains", "");
+lockPref("media.getusermedia.screensharing.enabled", false);
+lockPref("media.gmp-eme-adobe.autoupdate", false);
+lockPref("media.gmp-eme-adobe.enabled", false);
+lockPref("media.gmp-eme-adobe.visible", false);
+lockPref("media.gmp-gmpopenh264.abi", "x86_64-msvc-x64");
+lockPref("media.gmp-gmpopenh264.autoupdate", false);
+lockPref("media.gmp-gmpopenh264.enabled", false);
+lockPref("media.gmp-manager.url", "data:text/plain, "); // prevent checks for plugin updates when drm is disabled
+lockPref("media.gmp-provider.enabled", false);
+lockPref("media.gmp-widevinecdm.autoupdate", false);
+lockPref("media.gmp-widevinecdm.enabled", false);
+lockPref("media.gmp-widevinecdm.visible", false);
+lockPref("media.gmp.storage.version.observed", 1);
+lockPref("media.gmp.trial-create.enabled", false);
+lockPref("media.hls.enabled", false);
+lockPref("media.mediadrm-widevinecdm.visible", false);
+lockPref("media.mediasource.enabled", true);
+lockPref("media.mediasource.mp4.enabled", true);
+lockPref("media.mediasource.webm.audio.enabled", true);
+lockPref("media.mediasource.webm.enabled", true);
+lockPref("media.mp4.enabled", true);
+lockPref("media.navigator.enabled", false);
+lockPref("media.navigator.hardware.vp8_decode.acceleration_enabled", true);
+lockPref("media.navigator.hardware.vp8_encode.acceleration_enabled", true);
+lockPref("media.navigator.video.enabled", false);
+lockPref("media.ogg.enabled", false);
+lockPref("media.ogg.flac.enabled", false);
+lockPref("media.ondevicechange.enabled", false);
+lockPref("media.openUnsupportedTypeWithExternalApp", true);
+lockPref("media.opus.enabled", false);
+lockPref("media.peerconnection.enabled", false);
+lockPref("media.peerconnection.ice.default_address_only", true);
+lockPref("media.peerconnection.ice.no_host", true);
+lockPref("media.peerconnection.ice.proxy_only", true);
+lockPref("media.peerconnection.ice.proxy_only_if_behind_proxy", true); // force webrtc inside proxy when one is used
+lockPref("media.peerconnection.identity.enabled", false);
+lockPref("media.peerconnection.identity.timeout", 1);
+lockPref("media.peerconnection.turn.disable", true);
+lockPref("media.peerconnection.use_document_iceservers", false);
+lockPref("media.peerconnection.video.enabled", false);
+lockPref("media.plugins.enabled", true);
+lockPref("media.preload.auto", 2);
+lockPref("media.preload.default", 1);
+lockPref("media.raw.enabled", false);
+lockPref("media.realtime_decoder.enabled", true);
+lockPref("media.stagefright.omxcodec.flags", 16);
+lockPref("media.throttle-regardless-of-download-rate", false);
+lockPref("media.track.enabled", false);
+lockPref("media.video_stats.enabled", false);
+lockPref("media.video-queue.send-to-compositor-size", 1);
+lockPref("media.wave.enabled", false);
+lockPref("media.webm.enabled", true);
+lockPref("media.webspeech.recognition.enable", false);
+lockPref("media.webspeech.synth.enabled", false);
+lockPref("media.webvtt.enabled", true);
+lockPref("media.wmf.deblacklisting-for-telemetry-in-gpu-process", false);
+lockPref("media.wmf.enabled", true);
+lockPref("middlemouse.contentLoadURL", false);
+lockPref("middlemouse.paste", false);
+lockPref("mousebutton.4th.enabled", false);
+lockPref("mousebutton.5th.enabled", false);
+lockPref("mousebutton.6th.enabled", false);
+lockPref("mozilla.widget.disable-native-theme", false);                       //do not set true. when 'true'===>BUG: v45.0 will not render Windows frame, won't draw checkboxes nor buttons.
+lockPref("mozilla.widget.force-24bpp", true);
+lockPref("mozilla.widget.use-buffer-pixmap", true);
+lockPref("network.allow-experiments", false);
+lockPref("network.captive-portal-service.enabled", false);                    //block a-lot of background-traffic for resolving DNS.  https://support.mozilla.org/en-US/questions/1169302  https://support.mozilla.org/en-US/questions/1157121  - note that this is a mechianisem that detects 'WiFi pre-connection web-pages' such as policy-agree if you browse a lot on free-WiFi, you better keep this ON (true) - https://en.wikipedia.org/wiki/Captive_portal
+lockPref("network.connectivity-service.enabled", false);
+lockPref("network.cookie.cookieBehavior", 1);                                 //enable, but block 3rd-party ones.
+lockPref("network.cookie.thirdparty.sessionOnly", true);
+lockPref("network.dns.blockDotOnion", true);
+lockPref("network.dns.disableIPv6", true);
+lockPref("network.dns.disablePrefetch", false);
+lockPref("network.dns.disablePrefetchFromHTTPS", false);
+lockPref("network.dns.echconfig.enabled", true);
+lockPref("network.dns.upgrade_with_https_rr", true);
+lockPref("network.dns.use_https_rr_as_altsvc", true);    //not sure if it is a good idea
+lockPref("network.dns.use_https_rr_for_speculative_connection", true);
+lockPref("network.dnsCacheEntries", 0);                             //400 domains resolved       (default:20 domains)
+lockPref("network.dnsCacheExpiration", 0);                         //86400seconds === 24 hours (default:60 seconds)
+lockPref("network.file.disable_unc_paths", true); // hidden, disable using uniform naming convention to prevent proxy bypass
+lockPref("network.gio.supported-protocols", ""); // disable gio as it could bypass proxy
+lockPref("network.http.accept-encoding", "gzip, deflate");            //disable Brotli(br) compression,  by default it is either missing/empty or "gzip, deflate, br"
+lockPref("network.http.accept-encoding.secure", "gzip, deflate");     //disable Brotli(br) compression,  by default it is either missing/empty or "gzip, deflate, br"
+lockPref("network.http.accept-encoding.secure.reverted", true);       //disable Brotli(br) compression.
+lockPref("network.http.altsvc.enabled", false);
+lockPref("network.http.altsvc.oe", false);
+lockPref("network.http.fast-fallback-to-IPv4", true);
+lockPref("network.http.http3.enabled", true);
+lockPref("network.http.keep-alive", true);
+lockPref("network.http.max-connections", 128);
+lockPref("network.http.max-connections-per-server", 32);
+lockPref("network.http.max-persistent-connections-per-proxy", 64);
+lockPref("network.http.max-persistent-connections-per-server", 32);
+lockPref("network.http.pipelining", true);
+lockPref("network.http.pipelining.firstrequest", false);
+lockPref("network.http.pipelining.max-optimistic-requests", 16);
+lockPref("network.http.pipelining.maxrequests", 16);
+lockPref("network.http.pipelining.ssl", true);
+lockPref("network.http.proxy.keep-alive", true);
+lockPref("network.http.proxy.pipelining", true);
+lockPref("network.http.redirection-limit", 5);
+lockPref("network.http.referer.defaultPolicy", 1);
+lockPref("network.http.spdy.enabled", true);               //enable SPDY
+lockPref("network.http.spdy.enabled.deps", true);          //enable SPDY
+lockPref("network.http.spdy.enabled.http2", true);         //enable SPDY
+lockPref("network.http.spdy.enabled.v2", true);            //enable SPDY
+lockPref("network.http.spdy.enabled.v3", true);            //enable SPDY
+lockPref("network.http.spdy.enabled.v3-1", true);          //enable SPDY
+lockPref("network.http.spdy.enforce-tls-profile", true);   //false is compatible for older-versions of Firefox, in-case SPDY is enabled, allowing loose-HTTPS certificates exchange.
+lockPref("network.http.spdy.persistent-settings", false);   //disable SPDY  - true will client-side verification error, that will cause 302-redirect errors on GMAIL and Google-based logins.
+lockPref("network.http.spdy.websockets", true);            //enable SPDY
+lockPref("network.http.speculative-parallel-limit", 0);           //disable prefetch / speculative connections and domain guessing
+lockPref("network.http.windows-sso.enabled", false); // disable MS auto authentication via sso
+lockPref("network.IDN_show_punycode", true); // use punycode in idn to prevent spoofing
+lockPref("network.jar.block-remote-files", true);
+lockPref("network.jar.open-unsafe-types", false);
+lockPref("network.manage-offline-status", false); //let users set the browser as offline, without the browser trying to guess.
+lockPref("network.predictor.cleaned-up", true);
+lockPref("network.predictor.enable-prefetch", true);
+lockPref("network.predictor.enabled", false);
+lockPref("network.predictor.preconnect-min-confidence", 40);
+lockPref("network.prefetch-next", false);
+lockPref("network.preload", true);
+lockPref("network.process.enabled", true);
+lockPref("network.protocol-handler.external.ms-windows-store", false);
+lockPref("network.proxy.autoconfig_url.include_path", false);
+lockPref("network.proxy.backup.ftp", "");
+lockPref("network.proxy.backup.ftp_port", 0);
+lockPref("network.proxy.backup.socks", "");
+lockPref("network.proxy.backup.socks_port", 0);
+lockPref("network.proxy.backup.ssl", "");
+lockPref("network.proxy.backup.ssl_port", 0);
+lockPref("network.proxy.share_proxy_settings", true);
+lockPref("network.proxy.socks_remote_dns", true); // forces dns query through the proxy when using one
+lockPref("network.standard-url.encode-query-utf8", true);
+lockPref("network.stricttransportsecurity.enabled", false);
+lockPref("network.stricttransportsecurity.preloadlist", false);
+lockPref("network.tcp.tcp_fastopen_enable", false);
+lockPref("network.tickle-wifi.enabled", false);
+lockPref("network.trr.confirmationNS", "skip"); // skip undesired DNS-over-HTTPS test connection
+lockPref("network.trr.custom_uri", "https://94.140.14.14/dns-query");
+lockPref("network.trr.mode", 2); //2=use dns-over-https, and fallback to default dns. 3=only use dns-over-https. 0=off
+lockPref("network.trr.uri", "https://94.140.14.14/dns-query");
+lockPref("network.trr.useGET", false);
+lockPref("network.warnOnAboutNetworking", false);
+lockPref("network.websocket.timeout.ping.request", 0);
+lockPref("nglayout.initialpaint.delay", 10);
+lockPref("notification.feature.enabled", false);
+lockPref("offline-apps.allow_by_default", false);
+lockPref("pageThumbs.enabled", false);
+lockPref("pdfjs.disabled", true);
+lockPref("pdfjs.enabledCache.initialized", true);
+lockPref("pdfjs.enabledCache.state", true);
+lockPref("pdfjs.enableScripting", false); // disable js scripting in the built-in pdf reader
+lockPref("pdfjs.enableWebGL", false);
+lockPref("pdfjs.previousHandler.alwaysAskBeforeHandling", true);
+lockPref("pdfjs.previousHandler.preferredAction", 4);
+lockPref("plugin.default.state", 0);
+lockPref("plugin.defaultXpi.state", 0);
+lockPref("plugin.disable_full_page_plugin_for_types", "application/pdf");
+lockPref("plugin.expose_full_path", true);
+lockPref("plugin.scan.plid.all", false);
+lockPref("plugin.state.flash", 2);
+lockPref("plugin.state.java", 0);
+lockPref("plugins.hide_infobar_for_missing_plugin", true);
+lockPref("plugins.hide_infobar_for_outdated_plugin", true);
+lockPref("plugins.update.url", "https://0.0.0.0/");
+lockPref("privacy.cpd.formdata", false);
+lockPref("privacy.cpd.offlineApps", true);
+lockPref("privacy.cpd.sessions", false);
+lockPref("privacy.cpd.siteSettings", true);
+lockPref("privacy.donottrackheader.enabled", true);
+lockPref("privacy.popups.disable_from_plugins", 1);
+lockPref("privacy.reduceTimerPrecision", false);
+lockPref("privacy.reduceTimerPrecision.enabled", false);
+lockPref("privacy.resistFingerprinting", false);
+lockPref("privacy.resistFingerprinting.autoDeclineNoUserInputCanvasPrompts", false);
+lockPref("privacy.resistFingerprinting.block_mozAddonManager", true); // prevents rfp from breaking AMO
+lockPref("privacy.resistFingerprinting.enabled", false);
+lockPref("privacy.resistFingerprinting.letterboxing", false);
+lockPref("privacy.resistFingerprinting.letterboxing.enabled", false);
+lockPref("privacy.resistFingerprinting.reduceTimerPrecision.enabled", false);
+lockPref("privacy.resistFingerprinting.reduceTimerPrecision.jitter", false);
+lockPref("privacy.resistFingerprinting.reduceTimerPrecision.microseconds", 0);
+lockPref("privacy.sanitize.timeSpan", 0);
+lockPref("privacy.trackingprotection.cryptomining.annotate", false);
+lockPref("privacy.trackingprotection.cryptomining.annotate.enabled", false);
+lockPref("privacy.trackingprotection.cryptomining.enabled", false);
+lockPref("privacy.trackingprotection.enabled", false);                         //might be problematic
+lockPref("privacy.trackingprotection.fingerprinting.annotate", false);
+lockPref("privacy.trackingprotection.fingerprinting.annotate.enabled", false);
+lockPref("privacy.trackingprotection.fingerprinting.enabled", false);
+lockPref("privacy.trackingprotection.introCount", 20);
+lockPref("privacy.trackingprotection.origin_telemetry.enabled", false);
+lockPref("privacy.trackingprotection.pbmode", false);
+lockPref("privacy.trackingprotection.pbmode.enabled", false);
+lockPref("privacy.trackingprotection.ui.enabled", false);
+lockPref("privacy.userContext.enabled", false);
+lockPref("reader.color_scheme", "light");
+lockPref("reader.parse-on-load.enabled", false);
+lockPref("sanity-test.advanced-layers", true);
+lockPref("sanity-test.running", false);
+lockPref("scrollbox.smoothScroll", false);
+lockPref("security.allow_chrome_frames_inside_content", false);
+lockPref("security.app_menu.recordEventTelemetry", false);
+lockPref("security.block_script_with_wrong_mime", true);
+lockPref("security.cert_pinning.enforcement_level", 0);
+lockPref("security.certerrors.recordEventTelemetry", false);
+lockPref("security.csp.enable", false);
+lockPref("security.default_personal_cert", "Select Automatically");
+lockPref("security.family_safety.mode", 0);  // disable win8.1 family safety cert
+lockPref("security.fileuri.strict_origin_policy", true);
+lockPref("security.identitypopup.recordEventTelemetry", false);
+lockPref("security.insecure_connection_icon.enabled", true);
+lockPref("security.insecure_password.ui.enabled", true);
+lockPref("security.mixed_content.block_active_content", true);
+lockPref("security.mixed_content.block_display_content", true);
+lockPref("security.mixed_content.block_object_subrequest", true);
+lockPref("security.mixed_content.send_hsts_priming", false);
+lockPref("security.mixed_content.upgrade_display_content", true);
+lockPref("security.mixed_content.use_hsts", false);
+lockPref("security.OCSP.enabled", 0);
+lockPref("security.OCSP.require", false);
+lockPref("security.pki.distrust_ca_policy", 0);                               //Symantec certificates will work again (no symantec distrust) [0 permit all|1 distrust symantec|2 distrust symantec even if is new (default in FirefoxV63+)]
+lockPref("security.pki.sha1_enforcement_level", 0);                           //allow SHA1 certificates again.
+lockPref("security.protectionspopup.recordEventTelemetry", false);
+lockPref("security.ssl.disable_session_identifiers", false);
+lockPref("security.ssl.enable_alpn", false);
+lockPref("security.ssl.enable_false_start", false);
+lockPref("security.ssl.enable_ocsp_must_staple", false);
+lockPref("security.ssl.enable_ocsp_stapling", false);
+lockPref("security.ssl.errorReporting.automatic", false);
+lockPref("security.ssl.errorReporting.enabled", false);
+lockPref("security.ssl.errorReporting.url", "https://0.0.0.0/");
+lockPref("security.ssl.treat_unsafe_negotiation_as_broken", true);
+lockPref("security.tls.version.max",5);
+lockPref("security.tls.version.min",3);   // 0 SSL3, 1 TLS1.0, 2 TLS1.1, 3 TLS1.2, 4 TLS1.3, 5 ?
+lockPref("security.warn_leaving_secure", true);
+lockPref("security.warn_submit_insecure", true);
+lockPref("security.warn_viewing_mixed", false);
+lockPref("security.xpconnect.plugin.unrestricted", false);
+lockPref("services.blocklist.signing.enforced", false);
+lockPref("services.blocklist.update_enabled", false);
+lockPref("services.sync.clients.devices.desktop", 1);
+lockPref("services.sync.clients.devices.mobile", 1);
+lockPref("services.sync.engine.creditcards", false);
+lockPref("services.sync.engine.creditcards.available", false);
+lockPref("services.sync.log.logger.telemetry", false);
+lockPref("services.sync.nextSync", 0);
+lockPref("services.sync.prefs.sync.browser.crashReports.unsubmittedCheck.autoSubmit2", false);
+lockPref("services.sync.prefs.sync.browser.search.update", false);
+lockPref("services.sync.prefs.sync.extensions.update.enabled", false);
+lockPref("services.sync.syncInterval", 600000);
+lockPref("services.sync.syncThreshold", 300);
+lockPref("services.sync.telemetry.maxEventsCount", 0);
+lockPref("services.sync.telemetry.maxPayloadCount", 0);
+lockPref("signon.autofillForms", true);
+lockPref("signon.autofillForms.http", true);
+lockPref("signon.autologin.proxy", true);
+lockPref("signon.formlessCapture.enabled", false);
+lockPref("signon.ignoreAutocomplete", false);
+lockPref("signon.importedFromSqlite", true);
+lockPref("signon.storeWhenAutocompleteOff", true);
+lockPref("snav.enabled", true);
+lockPref("social.directories", "");
+lockPref("social.enabled", false);
+lockPref("social.remote-install.enabled", false);
+lockPref("social.share.activationPanelEnabled", false);
+lockPref("social.shareDirectory", "");
+lockPref("social.toast-notifications.enabled", false);
+lockPref("social.whitelist", "");
+lockPref("startup.homepage_override_url", "about:blank");
+lockPref("startup.homepage_welcome_url", "about:blank");
+lockPref("startup.homepage_welcome_url.additional", "");
+lockPref("storage.vacuum.last.index", 1);
+lockPref("svg.context-properties.content.enabled", true);
+lockPref("svg.disabled", false);                                   //allow SVG (but not as font).
+lockPref("telemetry.archive.enabled", false);
+lockPref("telemetry.bhrPing.enabled", false);
+lockPref("telemetry.cachedClientID", "");
+lockPref("telemetry.debugSlowSql", false);
+lockPref("telemetry.enabled", false);
+lockPref("telemetry.firstShutdownPing.enabled", false);
+lockPref("telemetry.hybridContent.enabled", false);
+lockPref("telemetry.infoURL", "https://0.0.0.0/");
+lockPref("telemetry.maxEventsCount", 0);
+lockPref("telemetry.maxPayloadCount", 0);
+lockPref("telemetry.newProfilePing.enabled", false);
+lockPref("telemetry.origin_telemetry_test_mode.enabled", false);
+lockPref("telemetry.previousBuildID", "");
+lockPref("telemetry.rejected", true);
+lockPref("telemetry.reportingPolics.firstRun", false);
+lockPref("telemetry.reportingpolicy.enabled", false);
+lockPref("telemetry.reportingpolicy.firstRun", false);
+lockPref("telemetry.server", "https://0.0.0.0/");
+lockPref("telemetry.shutdownPingSender.enabled", false);
+lockPref("telemetry.shutdownPingSender.enabledFirstSession", false);
+lockPref("telemetry.unified", false);
+lockPref("telemetry.unifiedIsOptIn", true);
+lockPref("telemetry.updatePing.enabled", false);
+lockPref("toolkit.coverage.enabled", false);
+lockPref("toolkit.coverage.endpoint.base", "");
+lockPref("toolkit.coverage.opt-out", true); // hidden
+lockPref("toolkit.crashreporter.enabled", false);
+lockPref("toolkit.crashreporter.include_context_heap", false);
+lockPref("toolkit.crashreporter.infoURL", "");
+lockPref("toolkit.dump.emit", false);
+lockPref("toolkit.identity.enabled", false);
+lockPref("toolkit.legacyUserProfileCustomizations.stylesheets", true); //allow custom look for the shell of the browser, using custom css: userchrome.css and usercontent.css in profile/chrome/ folder
+lockPref("toolkit.scrollbox.smoothScroll", false);
+lockPref("toolkit.telemetry.archive.enabled", false);
+lockPref("toolkit.telemetry.bhrPing.enabled", false);
+lockPref("toolkit.telemetry.cachedClientID", "");
+lockPref("toolkit.telemetry.coverage.opt-out", true);
+lockPref("toolkit.telemetry.coverage.opt-out", true); // hidden
+lockPref("toolkit.telemetry.debugSlowSql", false);
+lockPref("toolkit.telemetry.ecosystemtelemetry", false);
+lockPref("toolkit.telemetry.ecosystemtelemetry.enabled", false);
+lockPref("toolkit.telemetry.enabled", false);
+lockPref("toolkit.telemetry.enabled ", false);
+lockPref("toolkit.telemetry.firstShutdownPing.enabled", false);
+lockPref("toolkit.telemetry.geckoview.streaming", false);
+lockPref("toolkit.telemetry.hybridContent.enabled", false);
+lockPref("toolkit.telemetry.infoURL", "https://0.0.0.0/");
+lockPref("toolkit.telemetry.maxEventsCount", 0);
+lockPref("toolkit.telemetry.maxPayloadCount", 0);
+lockPref("toolkit.telemetry.newProfilePing.enabled", false);
+lockPref("toolkit.telemetry.pioneer-new-studies-available", false);
+lockPref("toolkit.telemetry.previousBuildID", "");
+lockPref("toolkit.telemetry.rejected", true);
+lockPref("toolkit.telemetry.reportingPolics.firstRun", false);
+lockPref("toolkit.telemetry.reportingpolicy.enabled", false);
+lockPref("toolkit.telemetry.reportingpolicy.firstRun", false);
+lockPref("toolkit.telemetry.server", "https://0.0.0.0/");
+lockPref("toolkit.telemetry.server_owner", "https://0.0.0.0/");
+lockPref("toolkit.telemetry.shutdownPingSender", false);
+lockPref("toolkit.telemetry.shutdownPingSender.enabled", false);
+lockPref("toolkit.telemetry.shutdownPingSender.enabledFirstSession", false);
+lockPref("toolkit.telemetry.testing.overrideProductsCheck", false);
+lockPref("toolkit.telemetry.unified", false);
+lockPref("toolkit.telemetry.unifiedIsOptIn", true);
+lockPref("toolkit.telemetry.updatePing.enabled", false);
+lockPref("toolkit.winRegisterApplicationRestart", false);         //prevent auto-start of the browser (Windows)
+lockPref("ui.elantech_gesture_hack.enabled", 1);
+lockPref("ui.elantech_gesture_hacks.enabled", 1);
+lockPref("ui.submenuDelay", 20);
+lockPref("ui.trackpoint_hack.enabled", -1);
+lockPref("view_source.syntax_highlight", true);
+lockPref("view_source.wrap_long_lines", true);
+lockPref("webextensions.storage.sync.enabled", true);
+lockPref("webgl.disable-extensions", true);
+lockPref("webgl.disable-fail-if-major-performance-caveat", true);
+lockPref("webgl.disabled", true);
+lockPref("webgl.dxgl.enabled", false);
+lockPref("webgl.enable-debug-renderer-info", false);
+lockPref("webgl.enable-webgl2", false);
+lockPref("webgl.min_capability_mode", true);
+lockPref("xpinstall.signatures.required", false);
+lockPref("xpinstall.whitelist.required", false);
+lockPref("zoom.maxPercent", 600);

@@ -1,0 +1,14 @@
+*.cmd                     text    eol=crlf
+*.txt                     text    eol=crlf
+*.xml                     text    eol=crlf
+*.html                    text    eol=crlf
+*.json                    text    eol=crlf
+*.css                     text    eol=crlf
+*.css_                    text    eol=crlf
+*.js                      text    eol=crlf
+*.js_                     text    eol=crlf
+*.cfg_                    text    eol=crlf
+*.cfg                     text    eol=crlf
+*.md                      text    eol=crlf
+README.md                         eol=crlf
+
